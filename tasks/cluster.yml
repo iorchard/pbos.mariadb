@@ -1,0 +1,70 @@
+---
+- name: Cluster | remove galera cluster files
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - "/var/lib/mysql/grastate.dat"
+    - "/var/lib/mysql/galera.cache"
+  become: true
+
+- name: Cluster | set up the first node
+  ansible.builtin.template:
+    dest: "{{ item.dest }}"
+    src: "{{ item.src | default('./templates' + item.dest + '.bootstrap.j2') }}"
+    mode: "0644"
+  loop:
+    - { dest: "/etc/mysql/mariadb.conf.d/50-server.cnf" }
+  become: true
+  when: inventory_hostname == groups['mariadb'][0]
+
+- name: Cluster | set up other nodes
+  ansible.builtin.template:
+    dest: "{{ item.dest }}"
+    src: "{{ item.src | default('./templates' + item.dest + '.j2') }}"
+    mode: "0644"
+  loop:
+    - { dest: "/etc/mysql/mariadb.conf.d/50-server.cnf" }
+  become: true
+  when: inventory_hostname != groups['mariadb'][0]
+
+- name: Cluster | systemctl stop mariadb.service
+  service:
+    name: "mariadb.service"
+    state: "stopped"
+    enabled: true
+  become: true
+
+- name: Cluster | bootstrap the first node
+  ansible.builtin.command: galera_new_cluster
+  become: true
+  when: inventory_hostname == groups['mariadb'][0]
+
+- name: Cluster | sleep for 10 seconds
+  ansible.builtin.wait_for:
+    timeout: 10
+  delegate_to: "{{ groups['mariadb'][0] }}"
+  run_once: true
+
+- name: Cluster | confirm bootstrap and start other nodes
+  block:
+    - name: Cluster | get the current cluster size
+      ansible.builtin.command:
+        argv:
+          - "mysql"
+          - "-ss"
+          - "-e"
+          - "show status where variable_name='wsrep_cluster_size'"
+      delegate_to: "{{ groups['mariadb'][0] }}"
+      run_once: true
+      register: ret
+      failed_when: ret.stdout != "wsrep_cluster_size\t1" 
+    
+    - name: Cluster | systemctl start mariadb.service on other nodes
+      service:
+        name: "mariadb.service"
+        state: "started"
+        enabled: true
+      when: inventory_hostname != groups['mariadb'][0]
+  become: true
+...

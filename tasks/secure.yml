@@ -1,0 +1,27 @@
+---
+- name: Secure | set root password
+  community.mysql.mysql_user:
+    login_unix_socket: "/run/mysqld/mysqld.sock"
+    name: "root"
+    host: "{{ item }}"
+    password: "{{ mariadb_root_password }}"
+    priv: "*.*:ALL,GRANT"
+  loop:
+    - 127.0.0.1
+    - localhost
+  become: true
+  no_log: true
+
+- name: Secure | remove .my.cnf file
+  ansible.builtin.file:
+    path: "/root/.my.cnf"
+    state: absent
+  become: true
+
+- name: Secure | set .my.cnf file
+  ansible.builtin.template:
+    src: "dotmy.cnf.j2"
+    dest: "/root/.my.cnf"
+    mode: "0600"
+  become: true
+...

@@ -1,0 +1,5 @@
+---
+# prerequisite packages
+prereq_pkgs:
+  - python3-pip
+...
