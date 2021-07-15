@@ -2,4 +2,6 @@
 # prerequisite packages
 prereq_pkgs:
   - python3-pip
+systemd_service_name:
+  - mariadb.service
 ...

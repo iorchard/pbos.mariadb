@@ -8,25 +8,14 @@
     - "/var/lib/mysql/galera.cache"
   become: true
 
-- name: Cluster | set up the first node
+- name: Cluster | configure server
   ansible.builtin.template:
     dest: "{{ item.dest }}"
-    src: "{{ item.src | default('./templates' + item.dest + '.bootstrap.j2') }}"
+    src: "{{ ansible_distribution | lower }}{{ item.dest + '.j2' }}"
     mode: "0644"
   loop:
     - { dest: "/etc/mysql/mariadb.conf.d/50-server.cnf" }
   become: true
-  when: inventory_hostname == groups['mariadb'][0]
-
-- name: Cluster | set up other nodes
-  ansible.builtin.template:
-    dest: "{{ item.dest }}"
-    src: "{{ item.src | default('./templates' + item.dest + '.j2') }}"
-    mode: "0644"
-  loop:
-    - { dest: "/etc/mysql/mariadb.conf.d/50-server.cnf" }
-  become: true
-  when: inventory_hostname != groups['mariadb'][0]
 
 - name: Cluster | systemctl stop mariadb.service
   service:
@@ -40,9 +29,13 @@
   become: true
   when: inventory_hostname == groups['mariadb'][0]
 
-- name: Cluster | sleep for 10 seconds
+- name: Cluster | wait for starting server
   ansible.builtin.wait_for:
+    host: "{{ ansible_host }}"
+    port: "{{ mariadb_port }}"
+    sleep: 2
     timeout: 10
+    state: started
   delegate_to: "{{ groups['mariadb'][0] }}"
   run_once: true
 

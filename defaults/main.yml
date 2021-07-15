@@ -1,3 +1,7 @@
 ---
-pbos_mariadb_cluster_name: "pbos_mariadb_cluster"
+keepalived_vip: ~
+service_name: "mariadb"
+mariadb_cluster_name: "pbos_mariadb_cluster"
+mariadb_port: 3306
+grastate_file: "/var/lib/mysql/grastate.dat"
 ...

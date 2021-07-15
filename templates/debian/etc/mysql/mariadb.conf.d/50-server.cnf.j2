@@ -42,7 +42,7 @@ skip-external-locking
 #myisam_recover_options = BACKUP
 #max_connections        = 100
 #table_cache            = 64
-max_connections        = 500
+max_connections        = 4096
 
 #
 # * Logging and Replication
@@ -125,5 +125,5 @@ binlog_format=row
 default_storage_engine=InnoDB
 innodb_autoinc_lock_mode=2
 bind-address="{{ ansible_host }}"
-wsrep_cluster_name="{{ pbos_mariadb_cluster_name }}"
+wsrep_cluster_name="{{ mariadb_cluster_name }}"
 wsrep_node_address="{{ ansible_host }}"

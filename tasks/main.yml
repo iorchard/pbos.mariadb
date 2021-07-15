@@ -30,9 +30,10 @@
       paths:
         - "."
 
+- name: Main | include cluster operations tasks
+  ansible.builtin.include_tasks: "cluster.yml"
+
 - name: Main | include secure operations tasks
   ansible.builtin.include_tasks: "secure.yml"
 
-- name: Main | include secure operations tasks
-  ansible.builtin.include_tasks: "cluster.yml"
 ...
