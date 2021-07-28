@@ -1,11 +1,14 @@
 ---
 - name: Delete | import common tasks
+  tags: mariadb
   ansible.builtin.import_tasks: "common.yml"
 
 - name: Delete | import stop tasks
+  tags: mariadb
   ansible.builtin.import_tasks: "stop.yml"
 
 - name: Delete | purge mariadb packages
+  tags: mariadb
   ansible.builtin.apt:
     name: "{{ item }}"
     autoremove: true
