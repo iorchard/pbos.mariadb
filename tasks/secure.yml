@@ -14,14 +14,16 @@
   run_once: true
   no_log: true
 
-- name: Secure | remove .my.cnf file
-  ansible.builtin.file:
-    path: "{{ lookup('env', 'HOME') }}/.my.cnf"
-    state: absent
-
-- name: Secure | set .my.cnf file
+- name: Secure | set .my.cnf file for user
   ansible.builtin.template:
     src: "dotmy.cnf.j2"
     dest: "{{ lookup('env', 'HOME') }}/.my.cnf"
     mode: "0600"
+
+- name: Secure | set .my.cnf file for root
+  ansible.builtin.template:
+    src: "dotmy.cnf.j2"
+    dest: "/root/.my.cnf"
+    mode: "0600"
+  become: true
 ...
