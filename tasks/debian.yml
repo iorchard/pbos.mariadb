@@ -20,4 +20,5 @@
     update_cache: true
     allow_unauthenticated: false
   become: true
+  loop: "{{ mariadb_pkgs }}"
 ...
