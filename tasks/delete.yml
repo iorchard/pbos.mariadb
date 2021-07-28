@@ -1,0 +1,16 @@
+---
+- name: Delete | import common tasks
+  ansible.builtin.import_tasks: "common.yml"
+
+- name: Delete | import stop tasks
+  ansible.builtin.import_tasks: "stop.yml"
+
+- name: Delete | purge mariadb packages
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    purge: true
+    state: absent
+  loop: "{{ rgw_pkgs }}"
+  become: true
+  when: inventory_hostname in groups['ceph_rgw']
+...

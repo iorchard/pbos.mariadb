@@ -27,7 +27,8 @@
 - name: Cluster | bootstrap the first node
   ansible.builtin.command: galera_new_cluster
   become: true
-  when: inventory_hostname == groups['mariadb'][0]
+  delegate_to: "{{ groups['mariadb'][0] }}"
+  run_once: true
 
 - name: Cluster | wait for starting server
   ansible.builtin.wait_for:

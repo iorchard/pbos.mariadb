@@ -10,6 +10,8 @@
     - 127.0.0.1
     - localhost
   become: true
+  delegate_to: "{{ groups['mariadb'][0] }}"
+  run_once: true
   no_log: true
 
 - name: Secure | remove .my.cnf file
