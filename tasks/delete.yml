@@ -8,9 +8,10 @@
 - name: Delete | purge mariadb packages
   ansible.builtin.apt:
     name: "{{ item }}"
+    autoremove: true
     purge: true
     state: absent
-  loop: "{{ rgw_pkgs }}"
+  loop: "{{ mariadb_pkgs }}"
   become: true
-  when: inventory_hostname in groups['ceph_rgw']
+  when: inventory_hostname in groups['mariadb']
 ...
