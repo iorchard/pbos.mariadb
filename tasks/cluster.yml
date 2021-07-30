@@ -55,10 +55,13 @@
       failed_when: ret.stdout != "wsrep_cluster_size\t1" 
     
     - name: Cluster | systemctl start mariadb.service on other nodes
-      service:
+      ansible.builtin.service:
         name: "mariadb.service"
-        state: "started"
-        enabled: true
+        state: "restarted"
+      register: _restart_service
+      until: _restart_service.state == "started"
+      retries: 3
+      delay: 3
       when: inventory_hostname != groups['mariadb'][0]
   become: true
 ...

@@ -1,9 +1,12 @@
 ---
+# apt_state: latest or present
+apt_state: "latest"
+
 # prerequisite packages
 prereq_pkgs:
   - python3-pip
 
-mariadb_pkgs:
+packages:
   - mariadb-server
 
 systemd_service_name:

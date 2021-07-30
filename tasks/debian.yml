@@ -2,9 +2,13 @@
 - name: Debian | Install prerequisite packages
   ansible.builtin.apt:
     name: "{{ item }}"
-    state: present
+    state: "{{ apt_state }}"
     update_cache: true
     allow_unauthenticated: false
+  register: _apt
+  until: not _apt.failed
+  retries: 3
+  delay: 3
   become: true
   loop: "{{ prereq_pkgs }}"
 
@@ -13,12 +17,16 @@
     name: pymysql
   become: true
 
-- name: Debian | Install mariadb-server package
+- name: Debian | Install packages
   ansible.builtin.apt:
-    name: "mariadb-server"
-    state: present
+    name: "{{ item }}"
+    state: "{{ apt_state }}"
     update_cache: true
     allow_unauthenticated: false
+  register: _apt
+  until: not _apt.failed
+  retries: 3
+  delay: 3
   become: true
-  loop: "{{ mariadb_pkgs }}"
+  loop: "{{ packages }}"
 ...
