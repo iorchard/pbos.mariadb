@@ -55,6 +55,7 @@
       failed_when: ret.stdout != "wsrep_cluster_size\t1" 
     
     - name: Cluster | systemctl start mariadb.service on other nodes
+      throttle: 1
       ansible.builtin.service:
         name: "mariadb.service"
         state: "restarted"
