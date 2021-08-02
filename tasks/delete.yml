@@ -17,7 +17,7 @@
   loop: "{{ packages }}"
   become: true
 
-- name: Delete | remove data directory
+- name: Delete | remove directory
   tags:
     - mariadb
     - pbos-infra
