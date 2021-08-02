@@ -10,10 +10,22 @@
     - mariadb
     - pbos-infra
   ansible.builtin.apt:
-    name: "{{ item }}"
+    name: "{{ item }}*"
     autoremove: true
     purge: true
     state: absent
   loop: "{{ packages }}"
+  become: true
+
+- name: Delete | remove data directory
+  tags:
+    - mariadb
+    - pbos-infra
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - /var/lib/mysql
+    - /etc/mysql
   become: true
 ...
