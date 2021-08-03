@@ -21,5 +21,4 @@
 
 - name: Main | include secure operations tasks
   ansible.builtin.include_tasks: "secure.yml"
-
 ...

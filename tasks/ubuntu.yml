@@ -1,0 +1,32 @@
+---
+- name: Ubuntu | Install prerequisite packages
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: "{{ apt_state }}"
+    update_cache: true
+    allow_unauthenticated: false
+  register: _apt
+  until: not _apt.failed
+  retries: 3
+  delay: 3
+  become: true
+  loop: "{{ prereq_pkgs }}"
+
+- name: Ubuntu | Install pymysql python package
+  ansible.builtin.pip:
+    name: pymysql
+  become: true
+
+- name: Ubuntu | Install packages
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: "{{ apt_state }}"
+    update_cache: true
+    allow_unauthenticated: false
+  register: _apt
+  until: not _apt.failed
+  retries: 3
+  delay: 3
+  become: true
+  loop: "{{ packages }}"
+...

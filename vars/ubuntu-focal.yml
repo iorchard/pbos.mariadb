@@ -1,0 +1,15 @@
+---
+# apt_state: latest or present
+apt_state: "latest"
+
+# prerequisite packages
+prereq_pkgs:
+  - python3-pip
+
+packages:
+  - mysql-common
+  - mariadb-server
+
+systemd_service_name:
+  - mariadb.service
+...
