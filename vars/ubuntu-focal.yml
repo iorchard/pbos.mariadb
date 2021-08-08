@@ -8,6 +8,7 @@ prereq_pkgs:
 
 packages:
   - mysql-common
+  - mariadb-common
   - mariadb-server
 
 systemd_service_name:
