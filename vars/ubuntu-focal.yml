@@ -1,6 +1,5 @@
 ---
-# apt_state: latest or present
-apt_state: "latest"
+pkg_state: "latest"
 
 # prerequisite packages
 prereq_pkgs:
@@ -10,6 +9,11 @@ packages:
   - mysql-common
   - mariadb-common
   - mariadb-server
+
+service_conf:
+  - {dest: "/etc/mysql/mariadb.conf.d/50-server.cnf"}
+
+service_socket: "/run/mysqld/mysqld.sock"
 
 systemd_service_name:
   - mariadb.service
