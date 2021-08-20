@@ -1,0 +1,51 @@
+---
+- name: Rocky Linux | Install prerequisite packages
+  ansible.builtin.package:
+    name: "{{ item }}"
+    state: "{{ pkg_state }}"
+  register: _pkg
+  until: not _pkg.failed
+  retries: 3
+  delay: 3
+  become: true
+  loop: "{{ prereq_pkgs }}"
+
+- name: Rocky Linux | Install pymysql python package
+  ansible.builtin.pip:
+    name: pymysql
+  become: true
+
+- name: Rocky Linux | copy mariadb repo setup script
+  ansible.builtin.copy:
+    src: "{{ ansible_os_family | lower }}{{ mariadb_repo.file }}"
+    dest: "{{ mariadb_repo.file }}"
+    mode: "0755"
+
+#- name: Rocky Linux | get mariadb repo setup script
+#  ansible.builtin.get_url:
+#    url: "{{ mariadb_repo.url }}"
+#    dest: "{{ mariadb_repo.file }}"
+#    checksum: "sha256:{{ mariadb_repo.checksum }}"
+#    mode: "0755"
+#  register: _repo
+#  until: not _repo.failed
+#  retries: 3
+#  delay: 3
+
+- name: Rocky Linux | set mariadb repo
+  ansible.builtin.command: >-
+    {{ mariadb_repo.file }} \
+    --mariadb-server-version="{{ mariadb_repo.version }}"
+  become: true
+
+- name: Rocky Linux | Install packages
+  ansible.builtin.package:
+    name: "{{ item }}"
+    state: "{{ pkg_state }}"
+  register: _pkg
+  until: not _pkg.failed
+  retries: 3
+  delay: 3
+  become: true
+  loop: "{{ packages }}"
+...

@@ -1,0 +1,26 @@
+---
+pkg_state: "latest"
+
+# prerequisite packages
+prereq_pkgs:
+  - python3-pip
+
+mariadb_repo:
+  url: "https://downloads.mariadb.com/MariaDB/mariadb_repo_setup"
+  file: "/tmp/mariadb_repo_setup"
+  checksum: "fc84b8954141ed3c59ac7a1adfc8051c93171bae7ba34d7f9aeecd3b148f1527"
+  version: "mariadb-10.6"
+
+packages:
+  - MariaDB-server
+  - MariaDB-backup
+  - galera-4
+
+service_conf:
+  - {dest: "/etc/my.cnf.d/server.cnf"}
+
+service_socket: "/var/lib/mysql/mysql.sock"
+
+systemd_service_name:
+  - mariadb.service
+...
