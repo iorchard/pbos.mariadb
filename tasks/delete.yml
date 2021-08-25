@@ -9,7 +9,7 @@
   tags:
     - mariadb
     - pbos-infra
-  ansible.builtin.apt:
+  ansible.builtin.package:
     name: "{{ item }}*"
     state: absent
   loop: "{{ packages }}"
