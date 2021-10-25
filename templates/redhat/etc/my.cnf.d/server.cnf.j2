@@ -38,6 +38,7 @@ wsrep_node_address="{{ ansible_host }}"
 # If you use the same .cnf file for MySQL and MariaDB,
 # you can put MariaDB-only options here
 [mariadb]
+lower_case_table_names=1
 
 # This group is only read by MariaDB-10.5 servers.
 # If you use the same .cnf file for MariaDB of different versions,
