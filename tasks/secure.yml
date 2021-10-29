@@ -14,6 +14,17 @@
   run_once: true
   no_log: true
 
+- name: Secure | alter mysql user priviliges
+  community.mysql.mysql_user:
+    login_unix_socket: "{{ service_socket }}"
+    login_user: "root"
+    login_password: "{{ mariadb_root_password }}"
+    name: "mysql"
+    plugin: unix_socket
+    priv: "*.*:RELOAD,PROCESS,LOCK TABLES,REPLICATION CLIENT"
+  become: true
+  no_log: true
+
 - name: Secure | set .my.cnf file for user
   ansible.builtin.template:
     src: "dotmy.cnf.j2"
