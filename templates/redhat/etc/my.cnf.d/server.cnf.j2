@@ -42,5 +42,15 @@ wsrep_node_address="{{ ansible_host }}"
 # you can put MariaDB-only options here
 [mariadb]
 lower_case_table_names=1
+ssl_cert="{{ tls_server_cert }}"
+ssl_key="{{ tls_server_key }}"
+ssl_ca="{{ tls_server_ca_cert }}"
+tls_version=TLSv1.3
+# require_secure_transport=ON
+wsrep_provider_options="socket.ssl_cert={{ tls_server_cert }};socket.ssl_key={{ tls_server_key }};socket.ssl_ca={{ tls_server_ca_cert }}"
 
-
+[sst]
+sst-log-archive=0
+encrypt=3
+tcert="{{ tls_server_cert }}"
+tkey="{{ tls_server_key }}"

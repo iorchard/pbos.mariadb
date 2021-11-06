@@ -38,7 +38,7 @@
     --mariadb-server-version="{{ mariadb_repo.version }}"
   become: true
 
-- name: Rocky Linux | Install packages
+- name: Rocky Linux | Install packages on server
   ansible.builtin.package:
     name: "{{ item }}"
     state: "{{ pkg_state }}"
@@ -48,4 +48,19 @@
   delay: 3
   become: true
   loop: "{{ packages }}"
+  when: inventory_hostname in groups['mariadb']
+
+- name: Rocky Linux | Install packages on client
+  ansible.builtin.package:
+    name: "{{ item }}"
+    state: "{{ pkg_state }}"
+  register: _pkg
+  until: not _pkg.failed
+  retries: 3
+  delay: 3
+  become: true
+  loop: "{{ packages_clientonly }}"
+  when: inventory_hostname not in groups['mariadb']
+
+
 ...

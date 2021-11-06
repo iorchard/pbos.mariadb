@@ -16,6 +16,9 @@ packages:
   - MariaDB-backup
   - galera-4
 
+packages_clientonly:
+  - MariaDB-client
+
 service_conf:
   - {dest: "/etc/my.cnf.d/server.cnf"}
 

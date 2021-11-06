@@ -16,9 +16,14 @@
       paths:
         - "."
 
+- name: Main | include TLS tasks
+  ansible.builtin.include_tasks: "tls.yml"
+
 - name: Main | include cluster operations tasks
   ansible.builtin.include_tasks: "cluster.yml"
+  when: inventory_hostname in groups['mariadb']
 
 - name: Main | include secure operations tasks
   ansible.builtin.include_tasks: "secure.yml"
+  when: inventory_hostname in groups['mariadb']
 ...

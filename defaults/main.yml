@@ -4,4 +4,26 @@ service_name: "mariadb"
 mariadb_cluster_name: "pbos_mariadb_cluster"
 mariadb_port: 3306
 grastate_file: "/var/lib/mysql/grastate.dat"
+# TLS
+tls_tmp_dir: "/tmp/mariadb_tls"
+tls_subj: {
+  country_name: "KR",
+  state_or_province_name: "Gangwon-Do",
+  locality_name: "Wonju-Si",
+  organization_name: "iOrchard",
+  common_name: "PBOS",
+  email_address: "support@iorchard.co.kr"
+}
+tls_tmp_ca: {
+  key: "{{ tls_tmp_dir }}/ca-key.pem",
+  crt: "{{ tls_tmp_dir }}/ca-cert.pem"
+}
+tls_tmp_server: {
+  key: "{{ tls_tmp_dir }}/server-key.pem",
+}
+tls_days: "+3650d"
+tls_server_dir: "/etc/my.cnf.d/certificates"
+tls_server_key: "{{ tls_server_dir }}/server-key.pem"
+tls_server_cert: "{{ tls_server_dir }}/server-cert.pem"
+tls_server_ca_cert: "{{ tls_server_dir }}/ca-cert.pem"
 ...

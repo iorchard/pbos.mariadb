@@ -21,7 +21,7 @@
     login_password: "{{ mariadb_root_password }}"
     name: "mysql"
     plugin: unix_socket
-    priv: "*.*:RELOAD,PROCESS,LOCK TABLES,REPLICATION CLIENT"
+    priv: "*.*:RELOAD,PROCESS,LOCK TABLES,BINLOG MONITOR"
   become: true
   no_log: true
 
