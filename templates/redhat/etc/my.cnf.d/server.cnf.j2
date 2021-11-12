@@ -46,6 +46,8 @@ ssl_cert="{{ tls_server_cert }}"
 ssl_key="{{ tls_server_key }}"
 ssl_ca="{{ tls_server_ca_cert }}"
 tls_version=TLSv1.3
+# When this option is enabled, connections attempted using insecure transport 
+# will be rejected. Secure transports are SSL/TLS, Unix sockets or named pipes.
 # require_secure_transport=ON
 wsrep_provider_options="socket.ssl_cert={{ tls_server_cert }};socket.ssl_key={{ tls_server_key }};socket.ssl_ca={{ tls_server_ca_cert }}"
 
