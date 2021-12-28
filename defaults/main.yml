@@ -5,6 +5,7 @@ mariadb_cluster_name: "pbos_mariadb_cluster"
 mariadb_port: 3306
 grastate_file: "/var/lib/mysql/grastate.dat"
 # TLS
+ca_passphrase: ~
 tls_tmp_dir: "/tmp/mariadb_tls"
 tls_subj: {
   country_name: "KR",
@@ -14,9 +15,10 @@ tls_subj: {
   common_name: "PBOS",
   email_address: "support@iorchard.co.kr"
 }
-tls_tmp_ca: {
-  key: "{{ tls_tmp_dir }}/ca-key.pem",
-  crt: "{{ tls_tmp_dir }}/ca-cert.pem"
+tls_ca_dir: "/etc/pki/pbos"
+tls_ca: {
+  key: "{{ tls_ca_dir }}/ca-key.pem",
+  crt: "{{ tls_ca_dir }}/ca-cert.pem"
 }
 tls_tmp_server: {
   key: "{{ tls_tmp_dir }}/server-key.pem",
