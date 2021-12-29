@@ -21,7 +21,7 @@ character-set-server = utf8
 #
 [galera]
 # Mandatory settings
-wsrep_on=ON
+wsrep_on={% if groups['mariadb']|length == 1 %}OFF{% else %}ON{% endif %}{{''}}
 wsrep_sst_method=mariabackup
 wsrep_sst_auth=mysql:
 wsrep_sst_donor="{% for s in groups['mariadb'] %}{{ s }},{% endfor %}"

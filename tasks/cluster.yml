@@ -64,4 +64,5 @@
       delay: 3
       when: inventory_hostname != groups['mariadb'][0]
   become: true
+  when: groups['mariadb']|length > 1
 ...
