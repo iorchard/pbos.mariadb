@@ -12,7 +12,7 @@ tls_subj: {
   state_or_province_name: "Gangwon-Do",
   locality_name: "Wonju-Si",
   organization_name: "iOrchard",
-  common_name: "PBOS",
+  common_name: "pbos-mariadb",
   email_address: "support@iorchard.co.kr"
 }
 tls_ca_dir: "/etc/pki/pbos"
