@@ -28,6 +28,7 @@
   become: true
   delegate_to: "{{ groups['mariadb'][0] }}"
   run_once: true
+  changed_when: false
 
 - name: Cluster | wait for starting server
   ansible.builtin.wait_for:
@@ -51,8 +52,7 @@
       delegate_to: "{{ groups['mariadb'][0] }}"
       run_once: true
       register: ret
-      failed_when: ret.stdout != "wsrep_cluster_size\t1" 
-    
+      failed_when: ret.stdout != "wsrep_cluster_size\t1"
     - name: Cluster | systemctl start mariadb.service on other nodes
       throttle: 1
       ansible.builtin.service:

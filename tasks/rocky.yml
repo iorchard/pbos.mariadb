@@ -10,33 +10,24 @@
   become: true
   loop: "{{ prereq_pkgs }}"
 
-- name: Rocky Linux | Install pymysql python package
-  ansible.builtin.pip:
-    name: pymysql
-  become: true
+# - name: Rocky Linux | Install pymysql python package
+#   ansible.builtin.package:
+#     name: pymysql
+#   become: true
 
 - name: Rocky Linux | copy mariadb repo setup script
   ansible.builtin.copy:
     src: "{{ ansible_os_family | lower }}{{ mariadb_repo.file }}"
     dest: "{{ mariadb_repo.file }}"
     mode: "0755"
-
-#- name: Rocky Linux | get mariadb repo setup script
-#  ansible.builtin.get_url:
-#    url: "{{ mariadb_repo.url }}"
-#    dest: "{{ mariadb_repo.file }}"
-#    checksum: "sha256:{{ mariadb_repo.checksum }}"
-#    mode: "0755"
-#  register: _repo
-#  until: not _repo.failed
-#  retries: 3
-#  delay: 3
+  when: not offline
 
 - name: Rocky Linux | set mariadb repo
   ansible.builtin.command: >-
     {{ mariadb_repo.file }} \
     --mariadb-server-version="{{ mariadb_repo.version }}"
   become: true
+  when: not offline
 
 - name: Rocky Linux | Install packages on server
   ansible.builtin.package:
@@ -61,6 +52,4 @@
   become: true
   loop: "{{ packages_clientonly }}"
   when: inventory_hostname not in groups['mariadb']
-
-
 ...

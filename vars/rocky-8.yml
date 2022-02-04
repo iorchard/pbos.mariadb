@@ -12,6 +12,7 @@ mariadb_repo:
   version: "mariadb-10.6"
 
 packages:
+  - python3-PyMySQL
   - MariaDB-server
   - MariaDB-backup
   - galera-4

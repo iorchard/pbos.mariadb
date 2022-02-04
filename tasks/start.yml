@@ -37,7 +37,7 @@
     - pbos-infra
   block:
     - name: set systemd environment
-      shell: |
+      ansible.builtin.shell: |
         systemctl import-environment _WSREP_NEW_CLUSTER
       args:
         executable: /bin/bash

@@ -1,4 +1,5 @@
 ---
+offline: false
 keepalived_vip: ~
 service_name: "mariadb"
 mariadb_cluster_name: "pbos_mariadb_cluster"
