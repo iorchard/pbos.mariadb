@@ -1,4 +1,11 @@
 ---
+- name: Cluster | systemctl stop mariadb.service
+  service:
+    name: "mariadb.service"
+    state: "stopped"
+    enabled: true
+  become: true
+
 - name: Cluster | remove galera cluster files
   ansible.builtin.file:
     path: "{{ item }}"
@@ -14,13 +21,6 @@
     src: "{{ ansible_os_family | lower }}{{ item.dest + '.j2' }}"
     mode: "0644"
   loop: "{{ service_conf }}"
-  become: true
-
-- name: Cluster | systemctl stop mariadb.service
-  service:
-    name: "mariadb.service"
-    state: "stopped"
-    enabled: true
   become: true
 
 - name: Cluster | bootstrap the first node
